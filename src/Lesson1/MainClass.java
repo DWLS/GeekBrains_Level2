@@ -13,16 +13,17 @@ public class MainClass {
                 new Water(100)};*/
 
         //Course c = new Course(obstacles);                     // Создаем полосу препятствий с параметрами
-        Course c = new Course();
+        ObstacleCourse c = new ObstacleCourse();
         c.info();                                               // Информация о полосе препятствий
         //Team team = new Team("SuperTeam", competitors);       // Создаем команду с параметрами
-        Team team = new Team("SuperTeam");
+        Team team = new Team("Dream Team");
         team.info();                                            // Начальная информация по участникам
         c.doIt(team);                                           // Просим команду пройти полосу
         team.showResults();                                     // Показываем результаты
         team.info();                                            // Конечная информация по участникам
         System.out.println();
         c.doIt(team);
+        team.showResults();
         team.info();
     }
 }

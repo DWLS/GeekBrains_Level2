@@ -23,10 +23,13 @@ public class Team {
     }
 
     void info() {
+        System.out.printf("\nКоманада %s\n", teamName);
+        System.out.println("---------------------------------------------------------");
         for (Competitor c :
                 competitors) {
             c.info();
         }
+        System.out.println("---------------------------------------------------------");
 
     }
 
