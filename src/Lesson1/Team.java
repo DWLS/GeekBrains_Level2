@@ -33,16 +33,14 @@ public class Team {
 
     }
 
-    void showResults(Obstacle... obstacles) {
-        for (Competitor c: competitors) {
-            for (Obstacle o :
-                    obstacles) {
-                o.doIt(c);
-                if(!c.isOnDistance()) {
-                    break;
-                }
-            }
+    void showResults() {
+        System.out.printf("\nРезультаты команды %s:\n", teamName);
+        System.out.println("---------------------------------------------------------");
+        for (Competitor c :
+                competitors) {
+            c.showResults();
         }
+        System.out.println("---------------------------------------------------------");
     }
 
 }
