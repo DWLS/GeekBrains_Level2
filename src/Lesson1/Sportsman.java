@@ -23,6 +23,10 @@ public class Sportsman implements Competitor {
         this.active = true;
     }
 
+    public String getName() {
+        return name;
+    }
+
     @Override
     public void run(int dist) {
         if (dist <= maxRunDistance) {
@@ -60,14 +64,21 @@ public class Sportsman implements Competitor {
 
     @Override
     public void info() {
-        if(!isOnDistance()) {
-            System.out.printf("%s %s с дистанции\n", name, sex == Sex.MALE ? "сошёл" : "сошла");
-        } else {
+        if (isOnDistance()) {
             System.out.printf("%s может пробежать %d метров, может проплыть %d метров, может преодолеть высоту %d метров.\n",
                     name,
                     maxRunDistance,
                     maxSwimDistance,
                     maxJumpHeigth);
+        }
+    }
+
+    @Override
+    public void showResults() {
+        if(!isOnDistance()) {
+            System.out.printf("%s %s с дистанции\n", name, sex == Sex.MALE ? "сошёл" : "сошла");
+        } else {
+            System.out.printf("%s продолжает марафон\n", name);
         }
     }
 
