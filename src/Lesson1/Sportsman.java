@@ -18,8 +18,8 @@ public class Sportsman implements Competitor {
         this.sex = sex;
         this.name = name;
         this.maxRunDistance = rand.nextInt(1) == 1 ? 5000 + rand.nextInt(500) : 5000 - rand.nextInt(500);
+        this.maxSwimDistance = rand.nextInt(1) == 1 ? 140 + rand.nextInt(50) : 140 - rand.nextInt(50);
         this.maxJumpHeigth = rand.nextInt(1) == 1 ? 5 + rand.nextInt(1) : 5 - rand.nextInt(2);
-        this.maxSwimDistance = rand.nextInt(1) == 1 ? 150 + rand.nextInt(50) : 150 - rand.nextInt(50);
         this.active = true;
     }
 
@@ -63,7 +63,7 @@ public class Sportsman implements Competitor {
         if(!isOnDistance()) {
             System.out.printf("%s %s с дистанции\n", name, sex == Sex.MALE ? "сошёл" : "сошла");
         } else {
-            System.out.printf("%s может пробежать %d метров, может проплыть %d метров, может подпрыгнуть на %d метров.\n",
+            System.out.printf("%s может пробежать %d метров, может проплыть %d метров, может преодолеть высоту %d метров.\n",
                     name,
                     maxRunDistance,
                     maxSwimDistance,

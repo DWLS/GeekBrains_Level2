@@ -14,7 +14,7 @@ public class ObstacleCourse {
     ObstacleCourse() {
         obstacles = new Obstacle[] {
                 new Cross(rand.nextInt(1) == 1 ? 4800 + rand.nextInt(500) : 4800 - rand.nextInt(500)),
-                new Water(rand.nextInt(1) == 1 ? 100 + rand.nextInt(20) : 100 - rand.nextInt(20)),
+                new Water(rand.nextInt(1) == 1 ? 110 + rand.nextInt(20) : 110 - rand.nextInt(20)),
                 new Wall(rand.nextInt(1) == 1 ? 5 + rand.nextInt(1) : 5 - rand.nextInt(1))};
     }
 
