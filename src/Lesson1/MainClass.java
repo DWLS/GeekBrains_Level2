@@ -1,5 +1,7 @@
 package Lesson1;
 
+import static java.lang.Thread.sleep;
+
 public class MainClass {
     public static void main(String[] args) {
         /*Competitor[] competitors = {
@@ -21,6 +23,12 @@ public class MainClass {
         team.info();                                            // Начальная информация по участникам
         c.doIt(team);                                           // Просим команду пройти полосу
         team.showResults();                                     // Показываем результаты
+
+        try {
+            sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         team.info();
         c.doIt(team);
