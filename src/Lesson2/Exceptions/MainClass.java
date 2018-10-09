@@ -38,22 +38,22 @@ public class MainClass {
         try {
             System.out.println("Сумма элементов массива равна " + transformAndSum(stringArray0));
         } catch (MyArraySizeException | MyArrayDataException e) {
-            System.out.println(e + " " + e.getMessage());
+            System.out.println(e);
         }
         try {
             System.out.println("Сумма элементов массива равна " + transformAndSum(stringArray1));
         } catch (MyArraySizeException | MyArrayDataException e) {
-            System.out.println(e + " " + e.getMessage());
+            System.out.println(e);
         }
         try {
             System.out.println("Сумма элементов массива равна " + transformAndSum(stringArray2));
         } catch (MyArraySizeException | MyArrayDataException e) {
-            System.out.println(e + " " + e.getMessage());
+            System.out.println(e);
         }
         try {
             System.out.println("Сумма элементов массива равна " + transformAndSum(stringArray3));
         } catch (MyArraySizeException | MyArrayDataException e) {
-            System.out.println(e + " " + e.getMessage());
+            System.out.println(e);
         }
     }
 
@@ -65,7 +65,7 @@ public class MainClass {
         if (in.length != 4) {
             throw new MyArraySizeException(String.format("Размерность массива должна быть %dх%d.", arrDim, arrDim));
         }
-        // Т.к. размерность вложенных массивов может быть не всегда одинакова, то проверяем, что в каждом из 4-х основных массивов находится массив ровно из 4 элементов
+        // Т.к. размерность вложенных массивов может быть не всегда одинакова, то проверяем, что в каждом из 4-х основных измерений находится массив ровно из 4 элементов
         for (int i = 0; i < in.length; i++) {
             if (in[i].length != 4) {
                 throw new MyArraySizeException(String.format("Размерность массива должна быть %dх%d.", arrDim, arrDim));
