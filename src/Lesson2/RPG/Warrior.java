@@ -12,8 +12,9 @@ class Warrior extends Hero {
             if(this.health <= 0) {
                 System.out.printf("%s погиб и бить не может!\n", this.name);
             } else {
-                System.out.printf("%s(%d) наносит %d урона %s(%d)\n", this.name, this.getHealth(), damage, hero.name, hero.getHealth());
                 hero.causeDamage(damage);
+                System.out.printf("%s(%d) наносит %d урона %s(%d)\n", this.name, this.getHealth(), damage, hero.name, hero.getHealth());
+
             }
 
         }
