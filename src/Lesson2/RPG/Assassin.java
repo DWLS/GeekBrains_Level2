@@ -18,8 +18,9 @@ class Assassin extends Hero {
                 System.out.printf("%s погиб и бить не может!\n", this.name);
             } else {
                 int currentDamage = damage + critHit.nextInt(20);
-                System.out.printf("%s(%d) наносит %d урона %s(%d)\n", this.name, this.getHealth(), currentDamage, hero.name, hero.getHealth());
                 hero.causeDamage(currentDamage);
+                System.out.printf("%s(%d) наносит %d урона %s(%d)\n", this.name, this.getHealth(), currentDamage, hero.name, hero.getHealth());
+
             }
         }
     }
