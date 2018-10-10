@@ -19,11 +19,14 @@ abstract class Hero {
     abstract void healing(Hero hero);
 
     void causeDamage(int damage) {
-        if(health <= 0) {
+        /*if(health <= 0) {
             System.out.printf("%s уже мёртвый!\n", this.name);
-        } else {
+        } else {*/
+        if (health > 0) {
             health -= damage;
         }
+
+        //}
 
     }
 
@@ -31,8 +34,13 @@ abstract class Hero {
         return damage;
     }
 
-    public int getHealth() {
-        return health;
+    int getHealth() {
+        if (health <= 0) {
+            return 0;
+        } else {
+            return health;
+        }
+
     }
 
     void addHealth(int heal) {
