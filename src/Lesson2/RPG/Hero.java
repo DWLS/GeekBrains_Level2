@@ -2,13 +2,15 @@ package Lesson2.RPG;
 
 abstract class Hero {
 
+    int maxHealth;
     int health;
     String name;
     int damage;
     int addHeal;
 
-    Hero(int health, String name, int damage, int addHeal) {
-        this.health = health;
+    Hero(int maxHealth, String name, int damage, int addHeal) {
+        this.maxHealth = maxHealth; // максимальный уровень здоровья у героя
+        this.health = maxHealth;    // текущий уровень здоровья у героя, в начале боя равен максимальному уровню здоровья
         this.name = name;
         this.damage = damage;
         this.addHeal = addHeal;
@@ -19,19 +21,17 @@ abstract class Hero {
     abstract void healing(Hero hero);
 
     void causeDamage(int damage) {
-        /*if(health <= 0) {
-            System.out.printf("%s уже мёртвый!\n", this.name);
-        } else {*/
         if (health > 0) {
             health -= damage;
         }
-
-        //}
-
     }
 
     public int getDamage() {
         return damage;
+    }
+
+    public int getMaxHealth() {
+        return maxHealth;
     }
 
     int getHealth() {
@@ -44,7 +44,11 @@ abstract class Hero {
     }
 
     void addHealth(int heal) {
-        health += heal;
+        if ((health + heal) > maxHealth) {      // если произведённое лечение превышает уровень максимального здоровья
+            health = maxHealth;                 // уровень здоровья героя делаем максимальным - просто произошёл "оверхил"
+        } else {
+            health += heal;
+        }
     }
 
     void info() {
