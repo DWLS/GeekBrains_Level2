@@ -2,17 +2,23 @@ package Lesson2.RPG;
 
 class Doctor extends Hero {
 
-    Doctor(int heal, String name, int damage, int addHeal) {
-        super(heal, name, damage, addHeal);
+    Doctor(int health, String name, int damage, int addHeal) {
+        super(health, name, damage, addHeal);
     }
 
     @Override
     void hit(Hero hero) {
-        System.out.println("Доктор не может бить!");
+        System.out.printf("Доктор %s не может бить!\n", this.name);
     }
 
     @Override
     void healing(Hero hero) {
-        hero.addHealth(addHeal);
+        if (this.health <= 0) {
+            System.out.printf("%s погиб и лечить не может\n", this.name);
+        } else {
+            hero.addHealth(addHeal);
+            System.out.printf("%s(%d) вылечил %s(%d) на %d единиц\n", this.name, this.getHealth(), hero.name, hero.getHealth(), this.addHeal);
+        }
+
     }
 }

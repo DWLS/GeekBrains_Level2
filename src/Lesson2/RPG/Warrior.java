@@ -9,12 +9,13 @@ class Warrior extends Hero {
     @Override
     void hit(Hero hero) {
         if (hero != this) {
-            if(health < 0) {
-                System.out.println("Герой погиб и бить не может!");
+            if(this.health <= 0) {
+                System.out.printf("%s погиб и бить не может!\n", this.name);
             } else {
+                System.out.printf("%s(%d) наносит %d урона %s(%d)\n", this.name, this.getHealth(), damage, hero.name, hero.getHealth());
                 hero.causeDamage(damage);
             }
-            System.out.println(this.name + " нанес урон " + hero.name);
+
         }
     }
 

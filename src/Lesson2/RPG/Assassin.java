@@ -4,23 +4,23 @@ import java.util.Random;
 
 class Assassin extends Hero {
 
-    private int cricitalHit;
+    private int criticalHit;
+    private Random critHit = new Random();
 
-    Assassin(int heal, String name, int damage, int addHeal) {
-        super(heal, name, damage, addHeal);
-        Random random = new Random();
-        this.cricitalHit = random.nextInt(20);
+    Assassin(int health, String name, int damage, int addHeal) {
+        super(health, name, damage, addHeal);
     }
 
     @Override
     void hit(Hero hero) {
         if (hero != this) {
-            if(health < 0) {
-                System.out.println("Герой погиб и бить не может!");
+            if(this.health <= 0) {
+                System.out.printf("%s погиб и бить не может!\n", this.name);
             } else {
-                hero.causeDamage(damage + cricitalHit);
+                int currentDamage = damage + critHit.nextInt(20);
+                System.out.printf("%s(%d) наносит %d урона %s(%d)\n", this.name, this.getHealth(), currentDamage, hero.name, hero.getHealth());
+                hero.causeDamage(currentDamage);
             }
-            System.out.println(this.name + " нанес урон " + hero.name);
         }
     }
 
