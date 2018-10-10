@@ -8,7 +8,7 @@ class Game {
         Random randomStep = new Random();
         Random randomHealing = new Random();
         Random randomHit = new Random();
-        int round = 25;
+        int round = 50;
 
         Hero[] team1 = new Hero[] {
                 new Warrior(250, "Тигрил", 50, 0),
@@ -29,14 +29,14 @@ class Game {
                 if(randomStep.nextInt(2) == 0) {
                     System.out.print("Ход игрока первой команды: ");
                     if(team1[i] instanceof Doctor) {
-                        team1[i].healing(team1[randomHealing.nextInt(2)]);
+                        team1[i].healing(team1[randomHealing.nextInt(3)]); // доктор может лечить в том числе и себя
                     } else {
                         team1[i].hit(team2[randomHit.nextInt(3)]);
                     }
                 } else {
                     System.out.print("Ход игрока второй команды: ");
                     if(team2[i] instanceof Doctor) {
-                        team2[i].healing(team2[randomHealing.nextInt(2)]);
+                        team2[i].healing(team2[randomHealing.nextInt(3)]); // доктор может лечить в том числе и себя
                     } else {
                         team2[i].hit(team1[randomHit.nextInt(3)]);
                     }
@@ -44,7 +44,9 @@ class Game {
             }
         }
 
-        System.out.println("---------------");
+        System.out.println("__________________");
+        System.out.println("| ИТОГИ СРАЖЕНИЯ |");
+        System.out.println("¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯");
 
         for (Hero t1: team1) {
             t1.info();
