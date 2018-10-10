@@ -2,8 +2,8 @@ package Lesson2.RPG;
 
 class Warrior extends Hero {
 
-    Warrior(int health, String type, int damage, int addHeal) {
-        super(health, type, damage, addHeal);
+    Warrior(int maxHealth, String name, int damage, int addHeal) {
+        super(maxHealth, name, damage, addHeal);
     }
 
     @Override

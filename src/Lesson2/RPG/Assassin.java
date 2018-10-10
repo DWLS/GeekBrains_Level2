@@ -4,10 +4,11 @@ import java.util.Random;
 
 class Assassin extends Hero {
 
+    private int criticalHit;
     private Random critHit = new Random();
 
-    Assassin(int maxHealth, String name, int damage, int addHeal) {
-        super(maxHealth, name, damage, addHeal);
+    Assassin(int health, String name, int damage, int addHeal) {
+        super(health, name, damage, addHeal);
     }
 
     @Override
@@ -16,7 +17,7 @@ class Assassin extends Hero {
             if(this.health <= 0) {
                 System.out.printf("%s погиб и бить не может!\n", this.name);
             } else {
-                int currentDamage = damage + critHit.nextInt(20);   // уровень убийцы на каждом ходу равен "базовый уровень + случайный критический урон"
+                int currentDamage = damage + critHit.nextInt(20);
                 hero.causeDamage(currentDamage);
                 System.out.printf("%s(%d) наносит %d урона %s(%d)\n", this.name, this.getHealth(), currentDamage, hero.name, hero.getHealth());
 
