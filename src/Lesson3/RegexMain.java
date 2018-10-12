@@ -3,8 +3,6 @@ package Lesson3;
 import javafx.css.Match;
 
 import java.util.Scanner;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class RegexMain {
     public static void main(String[] args) {
@@ -14,31 +12,34 @@ public class RegexMain {
         System.out.println("Придумайте логин:");
         login = sc.nextLine();
         do {
-            System.out.println("Придумайте пароль:");
+            System.out.println("Придумайте пароль (от 8 до 14 символов, минимум одна цифра, одна большая и одна маленькая буквы латиницы и [@#]):");
             password = sc.nextLine();
-        } while (!isPassValidRegex(password));
+        } while (!isPassValid(password));
 
         System.out.println(login + " " + password);
 
     }
 
     private static boolean isPassValid(String pass) {
-        /*if (pass.length() < 8) return false;
-        if (pass != )*/
-        return true;
-    }
-
-    private static boolean isPassValidRegex(String pass) {
+        // проверку на цифры и символы можно объединить в одни [] но так, кмк, нагляднее
         String patternSymbols = "(" +
-                "(?=.*[0-9])" +     // должен содержать минимум одну цифру
-                "(?=.*[a-z])" +     // должен содержать минимум одну букву латиницы в нижнем регистре
-                "(?=.*[A-Z])" +     // должен срдержать минимум одну букву латиницы в верхнеи регистре
-                "." +               // любое совпадение с предыдущими условиями
-                "{8,14}" +          // длина от 8 до 14 символов
+                "(?=.*[0-9])" +     // цифры от 0 до 9
+                "(?=.*[a-z])" +     // латиница от a до z
+                "(?=.*[A-Z])" +     // латиница от A до Z
+                "(?=.*[@#])" +      // один из символов @ или #
+                "(?=\\S+$)" +       // отсутствие пробельных символов
+                ".{8,16}" +         // длиной от 8 до 16 символов
                 ")";
-        Pattern pat = Pattern.compile(patternSymbols);
-        Matcher match = pat.matcher(pass);
+        // данная проверка избыточна, но другого способа указать пользователю на неверную длину пароля пока не нашёл
+        if (pass.length() < 8 || pass.length() > 14) {
+            System.out.println("Пароль не соответствует требованиям к длине!");
+            return false;
+        }
+        if (!pass.matches(patternSymbols)) {
+            System.out.println("Пароль не соответствует требованиям к наличию символов!");
+            return false;
+        }
 
-        return match.matches();
+        return true;
     }
 }
