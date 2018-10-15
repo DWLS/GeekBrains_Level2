@@ -7,6 +7,7 @@ public abstract class Hero {
     String name;
     int damage;
     int addHeal;
+    boolean isAlive;
 
     public Hero(int maxHealth, String name, int damage, int addHeal) {
         this.maxHealth = maxHealth; // максимальный уровень здоровья у героя
@@ -14,13 +15,14 @@ public abstract class Hero {
         this.name = name;
         this.damage = damage;
         this.addHeal = addHeal;
+        this.isAlive = true;
     }
 
     public abstract String hit(Hero hero);
 
     public abstract String healing(Hero hero);
 
-    public void causeDamage(int damage) {
+    void causeDamage(int damage) {
         if (health > 0) {
             health -= damage;
         }
