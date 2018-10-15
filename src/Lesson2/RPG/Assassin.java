@@ -2,17 +2,17 @@ package Lesson2.RPG;
 
 import java.util.Random;
 
-class Assassin extends Hero {
+public class Assassin extends Hero {
 
     private int criticalHit;
     private Random critHit = new Random();
 
-    Assassin(int health, String name, int damage, int addHeal) {
+    public Assassin(int health, String name, int damage, int addHeal) {
         super(health, name, damage, addHeal);
     }
 
     @Override
-    String hit(Hero hero) {
+    public String hit(Hero hero) {
         if (hero != this) {
             if (this.health <= 0) {
                 System.out.printf("%s погиб и бить не может!\n", this.name);
@@ -30,7 +30,7 @@ class Assassin extends Hero {
     }
 
     @Override
-    String healing(Hero hero) {
+    public String healing(Hero hero) {
         System.out.println("Убийцы не умеют лечить!");
         return "Убийцы не умеют лечить!";
     }
