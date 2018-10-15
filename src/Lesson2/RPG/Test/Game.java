@@ -1,6 +1,5 @@
 package Lesson2.RPG;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 class Game {
