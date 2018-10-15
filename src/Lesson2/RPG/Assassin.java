@@ -25,10 +25,8 @@ public class Assassin extends Hero {
                 return String.format("%s(%d) наносит %d урона %s(%d -> %d)\n", this.name, this.getHealth(), currentDamage, hero.name, heroHealth, hero.getHealth());
             }
         } else {
-            return String.format("%s не может ударить сам себя!\n", this.name);
+            return String.format("%s не может атаковать сам себя!\n", this.name);
         }
-
-
     }
 
     @Override
