@@ -72,22 +72,33 @@ public class GameWindow extends JFrame {
         btnAddTeam1.setBounds(195, 40, 88, 25);
         btnAddTeam1.setFont(myFont);
         btnAddTeam1.addActionListener(e -> {
-            if (dlmTeam1.getSize() < TEAM_MEMBERS_COUNT && !tfHeroNameTeam1.getText().equalsIgnoreCase("")) {
-                dlmTeam1.add(dlmTeam1.getSize(), cbChooseTeam1Hero.getSelectedItem() + " " + tfHeroNameTeam1.getText());
+            if (dlmTeam1.getSize() < TEAM_MEMBERS_COUNT) {
                 switch ((String) Objects.requireNonNull(cbChooseTeam1Hero.getSelectedItem())) {
                     case "Воин": {
-                        team1.add(new Warrior(250, tfHeroNameTeam1.getText(), 50, 0));
+                        String defaultName = "Тигрил";
+                        String name = tfHeroNameTeam1.getText().equalsIgnoreCase("") ? defaultName : tfHeroNameTeam1.getText();
+                        team1.add(new Warrior(250, name, 50, 0));
+                        dlmTeam1.add(dlmTeam1.getSize(), cbChooseTeam1Hero.getSelectedItem() + " " + name);
                         break;
                     }
                     case "Убийца": {
-                        team1.add(new Assassin(150, tfHeroNameTeam1.getText(), 70, 0));
+                        String defaultName = "Акали";
+                        String name = tfHeroNameTeam1.getText().equalsIgnoreCase("") ? defaultName : tfHeroNameTeam1.getText();
+                        team1.add(new Assassin(150, name, 70, 0));
+                        dlmTeam1.add(dlmTeam1.getSize(), cbChooseTeam1Hero.getSelectedItem() + " " + name);
                         break;
                     }
                     case "Лекарь": {
-                        team1.add(new Doctor(120, tfHeroNameTeam1.getText(), 0, 70));
+                        String defaultName = "Зои";
+                        String name = tfHeroNameTeam1.getText().equalsIgnoreCase("") ? defaultName : tfHeroNameTeam1.getText();
+                        team1.add(new Doctor(120, name, 0, 70));
+                        dlmTeam1.add(dlmTeam1.getSize(), cbChooseTeam1Hero.getSelectedItem() + " " + name);
                     }
                 }
                 tfHeroNameTeam1.setText("");
+                if (dlmTeam1.getSize() == TEAM_MEMBERS_COUNT) {
+                    btnAddTeam1.setEnabled(false);
+                }
                 if (dlmTeam1.getSize() == TEAM_MEMBERS_COUNT && dlmTeam2.getSize() == TEAM_MEMBERS_COUNT) {
                     btnStart.setEnabled(true);
                 }
@@ -99,22 +110,33 @@ public class GameWindow extends JFrame {
         btnAddTeam2.setBounds(579, 40, 88, 25);
         btnAddTeam2.setFont(myFont);
         btnAddTeam2.addActionListener(e -> {
-            if (dlmTeam2.getSize() < TEAM_MEMBERS_COUNT && !tfHeroNameTeam2.getText().equalsIgnoreCase("")) {
-                dlmTeam2.add(dlmTeam2.getSize(), cbChooseTeam2Hero.getSelectedItem() + " " + tfHeroNameTeam2.getText());
+            if (dlmTeam2.getSize() < TEAM_MEMBERS_COUNT) {
                 switch ((String) Objects.requireNonNull(cbChooseTeam2Hero.getSelectedItem())) {
                     case "Воин": {
-                        team2.add(new Warrior(240, tfHeroNameTeam2.getText(), 60, 0));
+                        String defaultName = "Минотавр";
+                        String name = tfHeroNameTeam2.getText().equalsIgnoreCase("") ? defaultName : tfHeroNameTeam2.getText();
+                        team2.add(new Warrior(240, name, 60, 0));
+                        dlmTeam2.add(dlmTeam2.getSize(), cbChooseTeam2Hero.getSelectedItem() + " " + name);
                         break;
                     }
                     case "Убийца": {
-                        team2.add(new Assassin(160, tfHeroNameTeam2.getText(), 60, 0));
+                        String defaultName = "Джинкс";
+                        String name = tfHeroNameTeam2.getText().equalsIgnoreCase("") ? defaultName : tfHeroNameTeam2.getText();
+                        team2.add(new Assassin(160, name, 60, 0));
+                        dlmTeam2.add(dlmTeam2.getSize(), cbChooseTeam2Hero.getSelectedItem() + " " + name);
                         break;
                     }
                     case "Лекарь": {
-                        team2.add(new Doctor(110, tfHeroNameTeam2.getText(), 0, 80));
+                        String defaultName = "Жанна";
+                        String name = tfHeroNameTeam2.getText().equalsIgnoreCase("") ? defaultName : tfHeroNameTeam2.getText();
+                        team2.add(new Doctor(110, name, 0, 80));
+                        dlmTeam2.add(dlmTeam2.getSize(), cbChooseTeam2Hero.getSelectedItem() + " " + name);
                     }
                 }
                 tfHeroNameTeam2.setText("");
+                if (dlmTeam2.getSize() == TEAM_MEMBERS_COUNT) {
+                    btnAddTeam2.setEnabled(false);
+                }
                 if (dlmTeam1.getSize() == TEAM_MEMBERS_COUNT && dlmTeam2.getSize() == TEAM_MEMBERS_COUNT) {
                     btnStart.setEnabled(true);
                 }
@@ -135,24 +157,34 @@ public class GameWindow extends JFrame {
                 roundCount = 10;    // если ввели не число, то делаем кол-во раундов по умолчанию
                 // добавить обработку исключения по значению текстового поля, если там оказывается не число
             }
+            boolean moveTeam1 = true;
+            boolean moveTeam2 = false;
+            String team1Move = "Ход игрока 1-й команды: ";
+            String team2Move = "Ход игрока 2-й команды: ";
             for (int j = 0; j < roundCount; j++) {
                 for (int i = 0; i < TEAM_MEMBERS_COUNT; i++) {
-                    if(randomStep.nextInt(2) == 0) {
-                        System.out.print("Ход игрока первой команды: ");
+                    if(moveTeam1) {
+                        System.out.print(team1Move);
                         if(team1.get(i) instanceof Doctor) {
-                            dlmFightLog.add(dlmFightLog.size(), "Ход игрока первой команды: " + team1.get(i).healing(team1.get(randomHealing.nextInt(3))));
+                            dlmFightLog.add(dlmFightLog.size(), team1Move + team1.get(i).healing(team1.get(randomHealing.nextInt(team1.size()))));
                             // доктор может лечить в том числе и себя
                         } else {
-                            dlmFightLog.add(dlmFightLog.size(), "Ход игрока первой команды: " + team1.get(i).hit(team2.get(randomHit.nextInt(3))));
+                            dlmFightLog.add(dlmFightLog.size(), team1Move + team1.get(i).hit(team2.get(randomHit.nextInt(team2.size()))));
                         }
+                        moveTeam1 = !moveTeam1;
+                        moveTeam2 = !moveTeam2;
+
                     } else {
-                        System.out.print("Ход игрока второй команды: ");
+                        System.out.print(team2Move);
                         if(team2.get(i) instanceof Doctor) {
-                            dlmFightLog.add(dlmFightLog.size(), "Ход игрока второй команды: " + team2.get(i).healing(team2.get(randomHealing.nextInt(3))));
+                            dlmFightLog.add(dlmFightLog.size(), team2Move + team2.get(i).healing(team2.get(randomHealing.nextInt(team2.size()))));
                             // доктор может лечить в том числе и себя
                         } else {
-                            dlmFightLog.add(dlmFightLog.size(), "Ход игрока второй команды: " + team2.get(i).hit(team1.get(randomHit.nextInt(3))));
+                            dlmFightLog.add(dlmFightLog.size(), team2Move + team2.get(i).hit(team1.get(randomHit.nextInt(team1.size()))));
                         }
+                        moveTeam2 = !moveTeam2;
+                        moveTeam1 = !moveTeam1;
+
                     }
                 }
             }
@@ -175,6 +207,8 @@ public class GameWindow extends JFrame {
             team1.clear();
             team2.clear();
             btnStart.setEnabled(false);
+            btnAddTeam1.setEnabled(true);
+            btnAddTeam2.setEnabled(true);
 
         });
         add(btnStart);
