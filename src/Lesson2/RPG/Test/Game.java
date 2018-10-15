@@ -1,4 +1,9 @@
-package Lesson2.RPG;
+package Lesson2.RPG.Test;
+
+import Lesson2.RPG.Assassin;
+import Lesson2.RPG.Doctor;
+import Lesson2.RPG.Hero;
+import Lesson2.RPG.Warrior;
 
 import java.util.Random;
 
