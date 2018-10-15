@@ -130,6 +130,7 @@ public class GameWindow extends JFrame {
             try {
                 roundCount = Integer.parseInt(tfRoundCount.getText());
             } catch (NumberFormatException nfe) {
+                roundCount = 10;    // если ввели не число, то делаем кол-во раундов по умолчанию
                 // добавить обработку исключения по значению текстового поля, если там оказывается не число
             }
             for (int j = 0; j < roundCount; j++) {
