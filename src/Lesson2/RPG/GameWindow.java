@@ -127,6 +127,8 @@ public class GameWindow extends JFrame {
         btnStart.setFont(myFont);
         btnStart.setEnabled(false);
         btnStart.addActionListener(e -> {
+            dlmFightLog.clear();
+            dlmFightResults.clear();
             try {
                 roundCount = Integer.parseInt(tfRoundCount.getText());
             } catch (NumberFormatException nfe) {
@@ -170,9 +172,9 @@ public class GameWindow extends JFrame {
 
             dlmTeam1.clear();
             dlmTeam2.clear();
-            btnStart.setEnabled(false);
             team1.clear();
             team2.clear();
+            btnStart.setEnabled(false);
 
         });
         add(btnStart);
@@ -216,7 +218,7 @@ public class GameWindow extends JFrame {
         lblFightLog.setFont(new Font("Comic Sans MS", BOLD|ITALIC, 16));
         add(lblFightLog);
 
-        lblFightResults.setBounds(416, 331, 185, 23);
+        lblFightResults.setBounds(482, 331, 185, 23);
         lblFightResults.setFont(new Font("Comic Sans MS", BOLD|ITALIC, 16));
         add(lblFightResults);
 
@@ -232,16 +234,16 @@ public class GameWindow extends JFrame {
         spTeam2.setBounds(416, 128, 251, 97);
         add(spTeam2);
 
-        lstFightResults.setBounds(416, 360, 251, 113);
+        lstFightResults.setBounds(482, 360, 185, 113);
         lstFightResults.setFont(myFont);
         JScrollPane spFightResults = new JScrollPane(lstFightResults);
-        spFightResults.setBounds(416, 360, 251, 113);
+        spFightResults.setBounds(482, 360, 185, 113);
         add(spFightResults);
 
-        lstFightLog.setBounds(32, 360, 347, 113);
+        lstFightLog.setBounds(32, 360, 425, 113);
         lstFightLog.setFont(myFont);
         JScrollPane spFightLog = new JScrollPane(lstFightLog);
-        spFightLog.setBounds(32, 360, 347, 113);
+        spFightLog.setBounds(32, 360, 425, 113);
         add(spFightLog);
 
         JMenu fileMenu = new JMenu("Новая игра");
