@@ -1,5 +1,6 @@
 package Lesson2.RPG;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 class Game {
@@ -8,7 +9,7 @@ class Game {
         Random randomStep = new Random();
         Random randomHealing = new Random();
         Random randomHit = new Random();
-        int round = 50;
+        int round = 20;
 
         Hero[] team1 = new Hero[] {
                 new Warrior(250, "Тигрил", 50, 0),
@@ -22,7 +23,6 @@ class Game {
                 new Assassin(160, "Джинкс", 60, 0),
                 new Doctor(110, "Зои", 0, 80)
         };
-
 
         for (int j = 0; j < round; j++) {
             for (int i = 0; i < team1.length; i++) {
