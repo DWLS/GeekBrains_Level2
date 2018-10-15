@@ -24,9 +24,11 @@ public class Assassin extends Hero {
                 System.out.printf("%s(%d) наносит %d урона %s(%d -> %d)\n", this.name, this.getHealth(), currentDamage, hero.name, heroHealth, hero.getHealth());
                 return String.format("%s(%d) наносит %d урона %s(%d -> %d)\n", this.name, this.getHealth(), currentDamage, hero.name, heroHealth, hero.getHealth());
             }
+        } else {
+            return String.format("%s не может ударить сам себя!\n", this.name);
         }
 
-        return "";
+
     }
 
     @Override
