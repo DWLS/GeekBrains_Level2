@@ -1,25 +1,27 @@
 package Lesson2.RPG;
 
-class Doctor extends Hero {
+public class Doctor extends Hero {
 
-    Doctor(int maxHealth, String name, int damage, int addHeal) {
+    public Doctor(int maxHealth, String name, int damage, int addHeal) {
         super(maxHealth, name, damage, addHeal);
     }
 
     @Override
-    void hit(Hero hero) {
-        System.out.printf("Доктор %s не может бить!\n", this.name);
+    public String hit(Hero hero) {
+        System.out.printf("Лекарь %s не может атаковать!\n", this.name);
+        return String.format("Лекарь %s не может атаковать!\n", this.name);
     }
 
     @Override
-    void healing(Hero hero) {
+    public String healing(Hero hero) {
         if (this.health <= 0) {
             System.out.printf("%s погиб и лечить не может!\n", this.name);
+            return String.format("%s погиб и лечить не может!\n", this.name);
         } else {
-            int currentHealth = this.health;            // если доктор лечит сам себя, то сначала показываем, сколько у него было здоровья, а потом - сколько стало
+            int heroHealth = hero.getHealth();
             hero.addHealth(addHeal);
-            System.out.printf("%s(%d) вылечил %d единиц %s(%d)\n", this.name, currentHealth, this.addHeal, hero.name, hero.getHealth());
+            System.out.printf("%s(%d) вылечил %d единиц %s(%d -> %d)\n", this.name, this.health, this.addHeal, hero.name, heroHealth, hero.getHealth());
+            return String.format("%s(%d) вылечил %d единиц %s(%d -> %d)\n", this.name, this.health, this.addHeal, hero.name, heroHealth, hero.getHealth());
         }
-
     }
 }
