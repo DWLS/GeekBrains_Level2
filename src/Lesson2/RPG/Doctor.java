@@ -8,8 +8,8 @@ public class Doctor extends Hero {
 
     @Override
     public String hit(Hero hero) {
-        System.out.printf("Лекарь %s не может бить!\n", this.name);
-        return String.format("Лекарь %s не может бить!\n", this.name);
+        System.out.printf("Лекарь %s не может атаковать!\n", this.name);
+        return String.format("Лекарь %s не может атаковать!\n", this.name);
     }
 
     @Override
