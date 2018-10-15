@@ -126,53 +126,53 @@ public class GameWindow extends JFrame {
         btnStart.setBounds(304, 264, 75, 25);
         btnStart.setFont(myFont);
         btnStart.setEnabled(false);
-        btnStart.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    roundCount = Integer.parseInt(tfRoundCount.getText());
-                } catch (NumberFormatException nfe) {
-                    // добавить обработку исключения по значению текстового поля, если там оказывается не число
-                }
-                for (int j = 0; j < roundCount; j++) {
-                    for (int i = 0; i < TEAM_MEMBERS_COUNT; i++) {
-                        if(randomStep.nextInt(2) == 0) {
-                            System.out.print("Ход игрока первой команды: ");
-                            if(team1.get(i) instanceof Doctor) {
-                                dlmFightLog.add(dlmFightLog.size(), "Ход игрока первой команды: " + team1.get(i).healing(team1.get(randomHealing.nextInt(3))));
-                                //team1.get(i).healing(team1.get(randomHealing.nextInt(3))); // доктор может лечить в том числе и себя
-                            } else {
-                                dlmFightLog.add(dlmFightLog.size(), "Ход игрока первой команды: " + team1.get(i).hit(team2.get(randomHit.nextInt(3))));
-                                //team1.get(i).hit(team2.get(randomHit.nextInt(3)));
-                            }
+        btnStart.addActionListener(e -> {
+            try {
+                roundCount = Integer.parseInt(tfRoundCount.getText());
+            } catch (NumberFormatException nfe) {
+                // добавить обработку исключения по значению текстового поля, если там оказывается не число
+            }
+            for (int j = 0; j < roundCount; j++) {
+                for (int i = 0; i < TEAM_MEMBERS_COUNT; i++) {
+                    if(randomStep.nextInt(2) == 0) {
+                        System.out.print("Ход игрока первой команды: ");
+                        if(team1.get(i) instanceof Doctor) {
+                            dlmFightLog.add(dlmFightLog.size(), "Ход игрока первой команды: " + team1.get(i).healing(team1.get(randomHealing.nextInt(3))));
+                            // доктор может лечить в том числе и себя
                         } else {
-                            System.out.print("Ход игрока второй команды: ");
-                            if(team2.get(i) instanceof Doctor) {
-                                dlmFightLog.add(dlmFightLog.size(), "Ход игрока второй команды: " + team2.get(i).healing(team2.get(randomHealing.nextInt(3))));
-                                //team2.get(i).healing(team2.get(randomHealing.nextInt(3))); // доктор может лечить в том числе и себя
-                            } else {
-                                dlmFightLog.add(dlmFightLog.size(), "Ход игрока второй команды: " + team2.get(i).hit(team1.get(randomHit.nextInt(3))));
-                                //team2.get(i).hit(team1.get(randomHit.nextInt(3)));
-                            }
+                            dlmFightLog.add(dlmFightLog.size(), "Ход игрока первой команды: " + team1.get(i).hit(team2.get(randomHit.nextInt(3))));
+                        }
+                    } else {
+                        System.out.print("Ход игрока второй команды: ");
+                        if(team2.get(i) instanceof Doctor) {
+                            dlmFightLog.add(dlmFightLog.size(), "Ход игрока второй команды: " + team2.get(i).healing(team2.get(randomHealing.nextInt(3))));
+                            // доктор может лечить в том числе и себя
+                        } else {
+                            dlmFightLog.add(dlmFightLog.size(), "Ход игрока второй команды: " + team2.get(i).hit(team1.get(randomHit.nextInt(3))));
                         }
                     }
                 }
-
-
-                System.out.println("__________________");
-                System.out.println("| ИТОГИ СРАЖЕНИЯ |");
-                System.out.println("¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯");
-
-                for (Hero t1: team1) {
-                    dlmFightResults.add(dlmFightResults.getSize(), t1.info());
-                }
-
-                for (Hero t2: team2) {
-                    dlmFightResults.add(dlmFightResults.getSize(), t2.info());
-                }
-
-
             }
+
+            // шапка для информации в консоли
+            System.out.println("__________________");
+            System.out.println("| ИТОГИ СРАЖЕНИЯ |");
+            System.out.println("¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯");
+
+            for (Hero t1: team1) {
+                dlmFightResults.add(dlmFightResults.getSize(), t1.info());
+            }
+
+            for (Hero t2: team2) {
+                dlmFightResults.add(dlmFightResults.getSize(), t2.info());
+            }
+
+            dlmTeam1.clear();
+            dlmTeam2.clear();
+            btnStart.setEnabled(false);
+            team1.clear();
+            team2.clear();
+
         });
         add(btnStart);
 
