@@ -1,13 +1,13 @@
 package Lesson2.RPG;
 
-class Warrior extends Hero {
+public class Warrior extends Hero {
 
-    Warrior(int maxHealth, String name, int damage, int addHeal) {
+    public Warrior(int maxHealth, String name, int damage, int addHeal) {
         super(maxHealth, name, damage, addHeal);
     }
 
     @Override
-    String hit(Hero hero) {
+    public String hit(Hero hero) {
         if (hero != this) {
             if (this.health <= 0) {
                 System.out.printf("%s погиб и бить не может!\n", this.name);
@@ -23,7 +23,7 @@ class Warrior extends Hero {
     }
 
     @Override
-    String healing(Hero hero) {
+    public String healing(Hero hero) {
         System.out.println("Воины не умеют лечить!");
         return "Воины не умеют лечить!";
     }
