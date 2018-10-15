@@ -4,7 +4,6 @@ import java.util.Random;
 
 public class Assassin extends Hero {
 
-    private int criticalHit;
     private Random critHit = new Random();
 
     public Assassin(int health, String name, int damage, int addHeal) {
@@ -21,6 +20,9 @@ public class Assassin extends Hero {
                 int currentDamage = damage + critHit.nextInt(20);
                 int heroHealth = hero.getHealth();
                 hero.causeDamage(currentDamage);
+                if (hero.getHealth() <= 0) {
+                    hero.isAlive = false;
+                }
                 System.out.printf("%s(%d) наносит %d урона %s(%d -> %d)\n", this.name, this.getHealth(), currentDamage, hero.name, heroHealth, hero.getHealth());
                 return String.format("%s(%d) наносит %d урона %s(%d -> %d)\n", this.name, this.getHealth(), currentDamage, hero.name, heroHealth, hero.getHealth());
             }

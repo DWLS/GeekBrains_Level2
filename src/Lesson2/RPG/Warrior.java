@@ -15,6 +15,9 @@ public class Warrior extends Hero {
             } else {
             int heroHealth = hero.getHealth();
             hero.causeDamage(damage);
+            if (hero.getHealth() <= 0) {
+                hero.isAlive = false;
+            }
             System.out.printf("%s(%d) наносит %d урона %s(%d -> %d)\n", this.name, this.getHealth(), damage, hero.name, heroHealth, hero.getHealth());
             return String.format("%s(%d) наносит %d урона %s(%d -> %d)\n", this.name, this.getHealth(), damage, hero.name, heroHealth, hero.getHealth());
             }
