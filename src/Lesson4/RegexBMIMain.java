@@ -49,7 +49,7 @@ public class RegexBMIMain {
                 "114 2.09\n" +
                 "98 1.72\n" +
                 "85 2.46\n" +
-                "113 1.94\n" +
+                "113\n" +
                 "53 1.77\n" +
                 "106 2.30";
 
@@ -64,7 +64,14 @@ public class RegexBMIMain {
     }
 
     private static String calcBMI(String[] s) {
-        float bmi = 0f;
+        float bmi = 0.0f;
+        if (s.length < 2) {
+            try {
+                throw new InsufficientDataException();
+            } catch (InsufficientDataException e) {
+                return e.getMessage();
+            }
+        }
         try {
             bmi = Float.valueOf(s[0]) / (Float.valueOf(s[1]) * Float.valueOf(s[1]));
         } catch (NumberFormatException ignored) {
