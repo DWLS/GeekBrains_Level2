@@ -53,7 +53,7 @@ public abstract class Hero {
     }
 
     public String info() {
-        System.out.println(name + " " + (health <= 0 ? "Герой мёртв" : health) + " " + damage);
-        return name + " " + (health <= 0 ? "Герой мёртв" : health) + " " + damage;
+        System.out.println(name + " " + (health <= 0 ? "Герой мёртв" : health) + " " + damage + " " + addHeal);
+        return name + " " + (health <= 0 ? "Герой мёртв" : health) + " " + damage + " " + addHeal;
     }
 }
