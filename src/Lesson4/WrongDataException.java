@@ -1,7 +1,7 @@
 package Lesson4;
 
-class WrongDataException extends Exception {
-    WrongDataException() {
-        super("Нечисловые данные");
+class WrongDataException extends RuntimeException {
+    WrongDataException(String s) {
+        super(s);
     }
 }

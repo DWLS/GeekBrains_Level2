@@ -1,7 +1,9 @@
 package Lesson4;
 
-public class InsufficientDataException extends Exception {
-    InsufficientDataException() {
-        super("Недостаточно данных!");
+import java.io.IOException;
+
+public class InsufficientDataException extends IOException {
+    InsufficientDataException(String s) {
+        super(s);
     }
 }
