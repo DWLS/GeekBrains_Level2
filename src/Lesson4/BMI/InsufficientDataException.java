@@ -1,4 +1,4 @@
-package Lesson4;
+package Lesson4.BMI;
 
 import java.io.IOException;
 
