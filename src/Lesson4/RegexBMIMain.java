@@ -64,7 +64,8 @@ public class RegexBMIMain {
     }
 
     private static String calcBMI(String[] s) {
-        float bmi = 0.0f;
+        double bmi = 0.0f;
+
         if (s.length < 2) {
             try {
                 throw new InsufficientDataException();
@@ -72,20 +73,20 @@ public class RegexBMIMain {
                 return e.getMessage();
             }
         }
-        try {
-            bmi = Float.valueOf(s[0]) / (Float.valueOf(s[1]) * Float.valueOf(s[1]));
-        } catch (NumberFormatException ignored) {
 
-        }
+        double weight = Double.valueOf(s[0]), height = Double.valueOf(s[1]);
+
+        bmi = weight / Math.pow(height, 2);
+        String info = weight + " " + height;
 
         if (bmi < 18.5) {
-            return  s[0] + " " + s[1] + " under";
+            return info + " under";
         } else if (bmi >= 18.5 && bmi < 25.0) {
-            return  s[0] + " " + s[1] + " normal";
+            return info + " normal";
         } else if (bmi >= 25.0 && bmi < 30.0) {
-            return  s[0] + " " + s[1] + " over";
+            return info + " over";
         } else {
-            return  s[0] + " " + s[1] + " obese";
+            return info + " obese";
         }
     }
 }
