@@ -53,28 +53,29 @@ public class RegexBMIMain {
                 "53 1.77\n" +
                 "106 2.30";
 
-        regEx(data);
+        calcBMIFromData(data);
 
     }
 
-    private static void regEx (String s) {
+    private static void calcBMIFromData (String s) {
         for (String aS1 : s.split("\n")) {
-            System.out.println(calcBMI(aS1.split("\\s+")));
+            System.out.println(BMI(aS1.split("\\s+")));
         }
     }
 
-    private static String calcBMI(String[] s) {
-        double bmi = 0.0f;
+    private static String BMI(String[] s) {
+        double bmi;
 
         if (s.length < 2) {
             try {
-                throw new InsufficientDataException();
+                throw new InsufficientDataException("Недостаточно данных для расчётов!");
             } catch (InsufficientDataException e) {
                 return e.getMessage();
             }
         }
 
-        double weight = Double.valueOf(s[0]), height = Double.valueOf(s[1]);
+        double weight = Double.valueOf(s[0]);
+        double height = Double.valueOf(s[1]);
 
         bmi = weight / Math.pow(height, 2);
         String info = weight + " " + height;
