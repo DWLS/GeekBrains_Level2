@@ -14,7 +14,7 @@ public class Doctor extends Hero {
 
     @Override
     public String healing(Hero hero) {
-        if (this.health <= 0) {
+        if (!this.isAlive) {
             System.out.printf("%s погиб и лечить не может!\n", this.name);
             return String.format("%s погиб и лечить не может!\n", this.name);
         } else {

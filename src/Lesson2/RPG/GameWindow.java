@@ -59,6 +59,15 @@ public class GameWindow extends JFrame {
     private JList<String> lstFightLog = new JList<>(dlmFightLog);
     private JMenuBar mb1 = new JMenuBar();
 
+    private boolean isTeamAlive (ArrayList<Hero> t) {
+        for (Hero h : t) {
+            if (h.isAlive) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public GameWindow() {
 
         Font myFont = new Font("Tahoma", PLAIN, 11);
@@ -161,46 +170,51 @@ public class GameWindow extends JFrame {
             boolean moveTeam2 = false;
             String team1Move = "Ход игрока 1-й команды: ";
             String team2Move = "Ход игрока 2-й команды: ";
+
             for (int j = 0; j < roundCount; j++) {
                 for (int i = 0; i < TEAM_MEMBERS_COUNT; i++) {
-                    if(moveTeam1) {
-                        System.out.print(team1Move);
-                        if(team1.get(i) instanceof Doctor) {
-                            dlmFightLog.add(dlmFightLog.size(), team1Move + team1.get(i).healing(team1.get(randomHealing.nextInt(team1.size()))));
-                            // доктор может лечить в том числе и себя
-                        } else {
-                            dlmFightLog.add(dlmFightLog.size(), team1Move + team1.get(i).hit(team2.get(randomHit.nextInt(team2.size()))));
+                    if (moveTeam1) {
+                        //System.out.print(team1Move);
+                        if (team1.get(i).isAlive) {
+                            if(team1.get(i) instanceof Doctor) {
+                                dlmFightLog.add(dlmFightLog.size(), team1Move + team1.get(i).healing(team1.get(randomHealing.nextInt(team1.size()))));
+                                // доктор может лечить в том числе и себя
+                            } else {
+                                dlmFightLog.add(dlmFightLog.size(), team1Move + team1.get(i).hit(team2.get(randomHit.nextInt(team2.size()))));
+                            }
+                            moveTeam1 = !moveTeam1;
+                            moveTeam2 = !moveTeam2;
                         }
-                        moveTeam1 = !moveTeam1;
-                        moveTeam2 = !moveTeam2;
-
                     } else {
-                        System.out.print(team2Move);
-                        if(team2.get(i) instanceof Doctor) {
-                            dlmFightLog.add(dlmFightLog.size(), team2Move + team2.get(i).healing(team2.get(randomHealing.nextInt(team2.size()))));
-                            // доктор может лечить в том числе и себя
-                        } else {
-                            dlmFightLog.add(dlmFightLog.size(), team2Move + team2.get(i).hit(team1.get(randomHit.nextInt(team1.size()))));
+                        //System.out.print(team2Move);
+                        if (team2.get(i).isAlive) {
+                            if(team2.get(i) instanceof Doctor) {
+                                dlmFightLog.add(dlmFightLog.size(), team2Move + team2.get(i).healing(team2.get(randomHealing.nextInt(team2.size()))));
+                                // доктор может лечить в том числе и себя
+                            } else {
+                                dlmFightLog.add(dlmFightLog.size(), team2Move + team2.get(i).hit(team1.get(randomHit.nextInt(team1.size()))));
+                            }
+                            moveTeam2 = !moveTeam2;
+                            moveTeam1 = !moveTeam1;
                         }
-                        moveTeam2 = !moveTeam2;
-                        moveTeam1 = !moveTeam1;
-
                     }
                 }
             }
 
             // шапка для информации в консоли
-            System.out.println("__________________");
+            /*System.out.println("__________________");
             System.out.println("| ИТОГИ СРАЖЕНИЯ |");
-            System.out.println("¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯");
+            System.out.println("¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯");*/
 
-            for (Hero t1: team1) {
+            /*for (Hero t1: team1) {
                 dlmFightResults.add(dlmFightResults.getSize(), t1.info());
-            }
+            }*/
+            dlmFightResults.add(dlmFightResults.getSize(), isTeamAlive(team1) ? "Команда 1 выжила" : "Команда 1 не выжила");
 
-            for (Hero t2: team2) {
+            /*for (Hero t2: team2) {
                 dlmFightResults.add(dlmFightResults.getSize(), t2.info());
-            }
+            }*/
+            dlmFightResults.add(dlmFightResults.getSize(), isTeamAlive(team2) ? "Команда 2 выжила" : "Команда 2 не выжила");
 
             dlmTeam1.clear();
             dlmTeam2.clear();

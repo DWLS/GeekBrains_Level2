@@ -9,7 +9,7 @@ public class Warrior extends Hero {
     @Override
     public String hit(Hero hero) {
         if (hero != this) {
-            if (this.health <= 0) {
+            if (!isAlive) {
                 System.out.printf("%s погиб и бить не может!\n", this.name);
                 return String.format("%s погиб и бить не может!\n", this.name);
             } else {
