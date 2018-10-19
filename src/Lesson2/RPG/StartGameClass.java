@@ -9,6 +9,6 @@ public class StartGameClass {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch(Exception ignored){}
 
-        SwingUtilities.invokeLater(() -> new GameWindow());
+        SwingUtilities.invokeLater(GameWindow::new);
     }
 }

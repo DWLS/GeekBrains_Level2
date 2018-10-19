@@ -4,7 +4,6 @@ import java.util.Random;
 
 public class Assassin extends Hero {
 
-    private int criticalHit;
     private Random critHit = new Random();
 
     public Assassin(int health, String name, int damage, int addHeal) {
@@ -14,13 +13,16 @@ public class Assassin extends Hero {
     @Override
     public String hit(Hero hero) {
         if (hero != this) {
-            if (this.health <= 0) {
+            if (!isAlive) {
                 System.out.printf("%s погиб и бить не может!\n", this.name);
                 return String.format("%s погиб и бить не может!\n", this.name);
             } else {
                 int currentDamage = damage + critHit.nextInt(20);
                 int heroHealth = hero.getHealth();
                 hero.causeDamage(currentDamage);
+                if (hero.getHealth() <= 0) {
+                    hero.isAlive = false;
+                }
                 System.out.printf("%s(%d) наносит %d урона %s(%d -> %d)\n", this.name, this.getHealth(), currentDamage, hero.name, heroHealth, hero.getHealth());
                 return String.format("%s(%d) наносит %d урона %s(%d -> %d)\n", this.name, this.getHealth(), currentDamage, hero.name, heroHealth, hero.getHealth());
             }
