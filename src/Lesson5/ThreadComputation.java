@@ -1,7 +1,7 @@
 package Lesson5;
 
 public class ThreadComputation {
-    private static final int SIZE = 25_000_000;
+    private static final int SIZE = 30_000_000;
     private static final int h = SIZE / 2;
     private static float[] arr = new float[SIZE];
     private static float[] arrThread = new float[SIZE];
