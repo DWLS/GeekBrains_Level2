@@ -6,12 +6,13 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.Vector;
 
 public class MainServer {
 
-    Vector<ClientHandler> clients;
+    private Vector<ClientHandler> clients;
 
     public MainServer() {
 
@@ -33,18 +34,17 @@ public class MainServer {
             e.printStackTrace();
         } finally {
             try {
-                socket.close();
+                Objects.requireNonNull(socket).close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
             try {
-                server.close();
+                Objects.requireNonNull(server).close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-
     }
 
     public void broadCastMsg(String msg) {
