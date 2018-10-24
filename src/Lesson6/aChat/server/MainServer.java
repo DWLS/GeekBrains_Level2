@@ -1,4 +1,4 @@
-package Lesson6.server;
+package Lesson6.aChat.server;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -34,13 +34,7 @@ public class MainServer {
             e.printStackTrace();
         } finally {
             try {
-                Objects.requireNonNull(socket).close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            try {
-                Objects.requireNonNull(server).close();
+                socket.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }

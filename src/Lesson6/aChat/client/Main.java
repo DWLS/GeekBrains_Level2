@@ -1,4 +1,4 @@
-package Lesson6.client;
+package Lesson6.aChat.client;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;

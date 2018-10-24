@@ -1,4 +1,4 @@
-package Lesson6.server;
+package Lesson6.aChat.server;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -30,7 +30,6 @@ public class ClientHandler {
                             break;
                         }
                         server.broadCastMsg("Client: " + str);
-                       // out.writeUTF(str);
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
