@@ -31,7 +31,7 @@ public class Server {
                     }
                 }
             }).start();
-            new Thread(() -> {
+            Thread tRead = new Thread(() -> {
                 try {
                     while (true) {
                         Scanner readerThread = new Scanner(System.in);
@@ -41,7 +41,9 @@ public class Server {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
-            }).start();
+            });
+            tRead.setDaemon(true);
+            tRead.start();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -32,7 +32,7 @@ public class Client {
             }
         }).start();
 
-        new Thread(() -> {
+        Thread tRead = new Thread(() -> {
             try {
                 while (true) {
                     consoleReader = new Scanner(System.in);
@@ -49,7 +49,9 @@ public class Client {
             } catch (Exception ex) {
                     ex.printStackTrace();
             }
-        }).start();
+        });
+        tRead.setDaemon(true);
+        tRead.start();
     }
 
 }
