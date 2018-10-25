@@ -25,20 +25,21 @@ public class Server {
                 while (in.hasNextLine()) {
                     String line = in.nextLine();
                     System.out.println("Получено от клиента: " + line);
-                    if (line.trim().equals("BYE")) {
-                        System.exit(0);
+                    if (line.equals("BYE")) {
+                        System.out.println("Получена команда завершения...");
+                        System.exit(0);     //если получили управляющее слово, то закрываем сервер
                     }
                 }
             }).start();
             new Thread(() -> {
-                while (true) {
-                    try {
+                try {
+                    while (true) {
                         Scanner readerThread = new Scanner(System.in);
                         String msg = readerThread.nextLine();
                         out.println(msg);
-                    } catch (Exception e) {
-                        e.printStackTrace();
                     }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }).start();
         } catch (Exception e) {

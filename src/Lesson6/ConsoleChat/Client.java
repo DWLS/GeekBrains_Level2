@@ -33,21 +33,21 @@ public class Client {
         }).start();
 
         new Thread(() -> {
-            while (true) {
-                try {
+            try {
+                while (true) {
                     consoleReader = new Scanner(System.in);
                     String msg = consoleReader.nextLine();
                     if (msg.equals("BYE")) {
-                        System.exit(0);
+                        writer.println(msg);
+                        writer.flush();
+                        System.exit(0);     // если ввели управляющее слово, то закрываем клиента
                     } else {
                         writer.println(msg);
                         writer.flush();
                     }
-
-                } catch (Exception ex) {
-                    ex.printStackTrace();
                 }
-
+            } catch (Exception ex) {
+                    ex.printStackTrace();
             }
         }).start();
     }
