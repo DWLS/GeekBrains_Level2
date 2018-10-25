@@ -5,7 +5,7 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
-public class ClientHandler {
+class ClientHandler {
 
     private MainServer server;
     private Socket socket;
@@ -13,7 +13,7 @@ public class ClientHandler {
     private DataInputStream in;
 
 
-    public ClientHandler(MainServer server, Socket socket) {
+    ClientHandler(MainServer server, Socket socket) {
 
         try {
             this.server = server;
@@ -57,7 +57,7 @@ public class ClientHandler {
         }
     }
 
-    public void sendMsg(String msg) {
+    void sendMsg(String msg) {
         try {
             out.writeUTF(msg);
         } catch (IOException e) {
