@@ -1,5 +1,6 @@
 package Lesson6.aChat.client;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -16,8 +17,10 @@ public class Controller implements Initializable {
 
     @FXML
     ListView userList;
+
     @FXML
     HBox hbox1;
+
     @FXML
     Button btnSend;
 
@@ -36,7 +39,7 @@ public class Controller implements Initializable {
     private final int PORT = 8189;
 
     public void sendMsg() {
-        if (!textField.getText().equals("")) {
+        if (!textField.getText().trim().equals("")) {
             try {
                 out.writeUTF(textField.getText());
                 textField.clear();
@@ -48,7 +51,12 @@ public class Controller implements Initializable {
     }
 
     public void closeApp() {
-        System.exit(0);
+        Platform.exit();
+        try {
+            socket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void showAbout() {

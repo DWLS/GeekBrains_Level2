@@ -1,13 +1,9 @@
 package Lesson6.aChat.server;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Objects;
-import java.util.Scanner;
 import java.util.Vector;
 
 public class MainServer {
@@ -22,7 +18,7 @@ public class MainServer {
 
         try {
             server = new ServerSocket(8189);
-            System.out.println("Сервер запущен!");
+            System.out.println("Сервер запущен! Ожидаем подключение...");
 
             while (true) {
                 socket = server.accept();
@@ -34,7 +30,12 @@ public class MainServer {
             e.printStackTrace();
         } finally {
             try {
-                socket.close();
+                Objects.requireNonNull(socket).close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                Objects.requireNonNull(server).close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
