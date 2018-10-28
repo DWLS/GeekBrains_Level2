@@ -10,6 +10,10 @@ public class MainServer {
 
     private Vector<ClientHandler> clients;
 
+    Vector<ClientHandler> getClients() {
+        return clients;
+    }
+
     public MainServer() {
 
         ServerSocket server = null;
@@ -25,7 +29,6 @@ public class MainServer {
                 System.out.println("Клиент подключился!");
                 clients.add(new ClientHandler(this, socket));
             }
-
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -42,10 +45,31 @@ public class MainServer {
         }
     }
 
-    public void broadCastMsg(String msg) {
-        for (ClientHandler o: clients) {
+    void broadCastMsg(String msg) {
+        for (ClientHandler o :
+                clients) {
             o.sendMsg(msg);
         }
+    }
+
+    void privateMsg(ClientHandler from, String nickTo, String msg) {
+        for (ClientHandler o :
+                clients) {
+            if (o.getNick().equals(nickTo)) {
+                o.sendMsg("от " + from.getNick() + ": " + msg);
+                from.sendMsg("юзеру " + nickTo + ": " + msg);
+                return;
+            }
+        }
+        from.sendMsg("Юзера " + nickTo + " нет в чате");
+    }
+
+    void subscribe(ClientHandler client) {
+        clients.add(client);
+    }
+
+    void unsubscribe(ClientHandler client) {
+        clients.remove(client);
     }
 
 }
