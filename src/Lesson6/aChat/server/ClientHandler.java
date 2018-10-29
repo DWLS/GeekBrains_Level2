@@ -4,14 +4,30 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.Vector;
 
 class ClientHandler {
 
     private MainServer server;
     private Socket socket;
+
     private DataOutputStream out;
     private DataInputStream in;
 
+    private String nick;
+
+    String getNick() {
+        return nick;
+    }
+
+    private boolean isNickBusy (Vector<ClientHandler> vch, String nick) {
+        for (ClientHandler ch : vch) {
+            if (ch.getNick().equals(nick)) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     ClientHandler(MainServer server, Socket socket) {
 
@@ -21,33 +37,70 @@ class ClientHandler {
             this.in = new DataInputStream(socket.getInputStream());
             this.out = new DataOutputStream(socket.getOutputStream());
 
-            new Thread(() -> {
-                try {
-                    while (true) {
-                        String str = in.readUTF();
-                        if(str.equals("/end")) {
-                            out.writeUTF("/serverClosed");
-                            break;
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        // цикл для авторизации
+                        while (true) {
+                            String str = in.readUTF();
+                            if(str.startsWith("/auth")) {
+                                String[] tokens = str.split("\\s");
+                                String newNick = AuthService.getNickByLoginAndPass(tokens[1], tokens[2]);
+                                if(newNick != null) {
+                                    if (isNickBusy(server.getClients(), newNick)) {
+                                        sendMsg("Пользователь уже авторизован!");
+                                    } else {
+                                        sendMsg("/authok");
+                                        nick = newNick;
+                                        server.subscribe(ClientHandler.this);
+                                        server.broadCastMsg(nick + " зашёл в чат");
+                                        break;
+                                    }
+                                } else {
+                                    sendMsg("Неверный логин/пароль!");
+                                }
+                            }
                         }
-                        server.broadCastMsg("Client: " + str);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } finally {
-                    try {
-                        in.close();
+                        // цикл для работы
+                        while (true) {
+                            String str = in.readUTF();
+                            if (str.startsWith("/")) {
+                                if(str.equals("/end")) {
+                                    out.writeUTF("/serverClosed");
+                                    break;
+                                }
+                                if (str.startsWith("/w ")) {
+                                    String[] tokens = str.split("\\s");
+                                    String nick = tokens[1];
+                                    String msg = str.substring(4 + nick.length());
+                                    server.privateMsg(ClientHandler.this, nick, msg);
+                                }
+                            } else {
+                                server.broadCastMsg(nick + ": " + str);
+                            }
+                        }
                     } catch (IOException e) {
                         e.printStackTrace();
-                    }
-                    try {
-                        out.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    try {
-                        socket.close();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    } finally {
+                        try {
+                            in.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            out.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            socket.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        server.unsubscribe(ClientHandler.this);
+                        server.broadCastMsg(nick + " покинул чат");
+                        System.out.println(nick + " покинул чат");
                     }
                 }
             }).start();
@@ -64,4 +117,5 @@ class ClientHandler {
             e.printStackTrace();
         }
     }
+
 }
