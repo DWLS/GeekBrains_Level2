@@ -3,6 +3,7 @@ package Lesson6.ConsoleChat;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Client {
@@ -12,8 +13,9 @@ public class Client {
     private static Scanner consoleReader;
 
     public static void main(String[] args) {
+        Socket sock = null;
         try {
-            Socket sock = new Socket("localhost", 8189);
+            sock = new Socket("localhost", 8189);
             reader = new Scanner(sock.getInputStream());
             writer = new PrintWriter(sock.getOutputStream());
             System.out.println("Cоединение установлено...");
@@ -32,6 +34,7 @@ public class Client {
             }
         }).start();
 
+        Socket finalSock = sock;
         Thread tRead = new Thread(() -> {
             try {
                 while (true) {
@@ -40,7 +43,8 @@ public class Client {
                     if (msg.equals("BYE")) {
                         writer.println(msg);
                         writer.flush();
-                        System.exit(0);     // если ввели управляющее слово, то закрываем клиента
+                        Objects.requireNonNull(finalSock).close();
+                        //System.exit(0);     // если ввели управляющее слово, то закрываем клиента
                     } else {
                         writer.println(msg);
                         writer.flush();
