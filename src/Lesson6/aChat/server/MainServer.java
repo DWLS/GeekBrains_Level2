@@ -3,10 +3,11 @@ package Lesson6.aChat.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Vector;
 
-public class MainServer {
+class MainServer {
 
     private Vector<ClientHandler> clients;
 
@@ -14,20 +15,22 @@ public class MainServer {
         return clients;
     }
 
-    public MainServer() {
+    MainServer() throws SQLException {
 
         ServerSocket server = null;
         Socket socket = null;
         clients = new Vector<>();
 
         try {
+            AuthService.connect();
+
             server = new ServerSocket(8189);
-            System.out.println("Сервер запущен! Ожидаем подключение...");
+            System.out.println("Сервер localhost:8189 запущен! Ожидаем подключения...");
 
             while (true) {
                 socket = server.accept();
-                System.out.println("Клиент подключился!");
-                clients.add(new ClientHandler(this, socket));
+                new ClientHandler(this, socket);
+                System.out.println("Клиент инициировал подключение!");
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -42,6 +45,7 @@ public class MainServer {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            AuthService.disconnect();
         }
     }
 

@@ -45,7 +45,7 @@ class ClientHandler {
                         while (true) {
                             String str = in.readUTF();
                             if(str.startsWith("/auth")) {
-                                String[] tokens = str.trim().split("\\s*");
+                                String[] tokens = str.split("\\s");
                                 String newNick = AuthService.getNickByLoginAndPass(tokens[1], tokens[2]);
                                 if(newNick != null) {
                                     if (isNickBusy(server.getClients(), newNick)) {
@@ -70,11 +70,11 @@ class ClientHandler {
                                     out.writeUTF("/serverClosed");
                                     break;
                                 }
-                                if (str.startsWith("/w ")) {                                    // если сообщение от клиента начинается с /w
-                                    String[] tokens = str.split("\\s*");                  // делим сообщение
-                                    String nick = tokens[1];                                    // получаем ник пользователя, который отправил сообщение
-                                    String msg = str.substring(4 + nick.length());              // начиная с позиции (4 + длина ника) находится непосредственно само сообщение
-                                    server.privateMsg(ClientHandler.this, nick, msg);     // отправляем сообщение в личку
+                                if (str.startsWith("/w ")) {
+                                    String[] tokens = str.split("\\s");
+                                    String nick = tokens[1];
+                                    String msg = str.substring(4 + nick.length());
+                                    server.privateMsg(ClientHandler.this, nick, msg);
                                 }
                             } else {
                                 server.broadCastMsg(nick + ": " + str);
@@ -100,6 +100,7 @@ class ClientHandler {
                         }
                         server.unsubscribe(ClientHandler.this);
                         server.broadCastMsg(nick + " покинул чат");
+                        System.out.println(nick + " покинул чат");
                     }
                 }
             }).start();
@@ -116,4 +117,5 @@ class ClientHandler {
             e.printStackTrace();
         }
     }
+
 }
