@@ -64,7 +64,7 @@ class MainServer {
     void privateMsg(ClientHandler from, String nickTo, String msg) {
         for (ClientHandler o :
                 clients) {
-            if (o.getNick().equals(nickTo)) {
+            if (o.getNick().equals(nickTo) && !o.checkBlackList(from.getNick())) {
                 o.sendMsg("от " + from.getNick() + ": " + msg);
                 from.sendMsg("юзеру " + nickTo + ": " + msg);
                 return;
