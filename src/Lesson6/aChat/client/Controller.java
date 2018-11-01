@@ -2,7 +2,6 @@ package Lesson6.aChat.client;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -11,9 +10,6 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.net.SocketException;
-import java.net.URL;
-import java.util.ResourceBundle;
 
 public class Controller {
 
@@ -34,7 +30,7 @@ public class Controller {
     @FXML
     Button btnLogin;
     @FXML
-    ListView userList;
+    ListView<String> userList;
     @FXML
     Button btnSend;
     @FXML
@@ -56,15 +52,27 @@ public class Controller {
         this.isAuthorized = isAuthorized;
 
         if(!isAuthorized) {
-            upperPanel.setVisible(true);
-            upperPanel.setManaged(true);
-            bottomPanel.setVisible(false);
-            bottomPanel.setManaged(false);
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    upperPanel.setVisible(true);
+                    upperPanel.setManaged(true);
+                    bottomPanel.setVisible(false);
+                    bottomPanel.setManaged(false);
+                    labelUserCount.setText("0");
+                    userList.getItems().clear();
+                }
+            });
         } else {
-            upperPanel.setVisible(false);
-            upperPanel.setManaged(false);
-            bottomPanel.setVisible(true);
-            bottomPanel.setManaged(true);
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    upperPanel.setVisible(false);
+                    upperPanel.setManaged(false);
+                    bottomPanel.setVisible(true);
+                    bottomPanel.setManaged(true);
+                }
+            });
         }
     }
 
@@ -90,15 +98,35 @@ public class Controller {
                         }
                         // цикл для работы
                         while (true) {
-                            String str = in.readUTF();
-                            if (str.equals("/serverClosed")) {
-                                setAuthorized(false);
-                                break;
+                            if(!socket.isClosed()) {
+                                String str = in.readUTF();
+                                if (str.startsWith("/")) {
+                                    if (str.equals("/serverClosed")) {
+                                        setAuthorized(false);
+                                        break;
+                                    }
+                                    if(str.startsWith("/clientlist")) {
+                                        String[] tokens = str.split(" ");
+                                        Platform.runLater(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                userList.getItems().clear();
+                                                labelUserCount.setText(String.valueOf(tokens.length - 1));
+                                                userList.getItems().clear();
+                                                for (int i = 1; i < tokens.length; i++) {
+                                                    userList.getItems().add(tokens[i]);
+                                                }
+                                            }
+                                        });
+                                    }
+                                } else {
+                                    textArea.appendText(String.format("%s%s", str, System.lineSeparator()));
+                                }
                             }
-                            textArea.appendText(String.format("%s%s", str, System.lineSeparator()));
                         }
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        System.out.println(e.getMessage());;
+                        //e.printStackTrace();
                     } finally {
                         try {
                             out.close();
@@ -115,6 +143,7 @@ public class Controller {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
+                        setAuthorized(false);
                     }
                 }
             }).start();
@@ -129,20 +158,29 @@ public class Controller {
         }
         try {
             out.writeUTF("/auth " + loginField.getText() + " " + passField.getText());
-            loginField.clear();
-            passField.clear();
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    loginField.clear();
+                    passField.clear();
+                }
+            });
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-
     public void sendMsg() {
-        if (!textField.getText().trim().equals("")) {
+        if (!textField.getText().equals("")) {
             try {
                 out.writeUTF(textField.getText());
-                textField.clear();
-                textField.requestFocus();
+                Platform.runLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        textField.clear();
+                        textField.requestFocus();
+                    }
+                });
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -161,21 +199,26 @@ public class Controller {
     }
 
     public void closeApp() {
-        Platform.exit();
         try {
-            out.close();
-        } catch (IOException e) {
+            Platform.exit();
+        } catch (Exception e) {
             e.printStackTrace();
-        }
-        try {
-            in.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        try {
-            socket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+        } finally {
+            try {
+                out.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                in.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                socket.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
