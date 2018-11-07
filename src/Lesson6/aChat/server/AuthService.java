@@ -19,21 +19,28 @@ class AuthService {
         }
     }
 
-    static String getNickByLoginAndPass(String login, String pass) {
-        String sql = String.format("SELECT nickname FROM USERS" +
-                " WHERE login = '%s' AND password = '%s'", login, pass);
+    public static void addUser(String login, String pass, String nick) throws SQLException {
+        String sql = String.format("INSERT INTO USERS (login, password, nickname)" +
+                "VALUES ('%s','%s','%s')", login, pass.hashCode(), nick);
+        stmt.execute(sql);
+    }
+
+    public static String getNickByLoginAndPass(String login, String pass) {
+        String sql = String.format("SELECT nickname, password FROM USERS" +
+                " WHERE login = '%s'", login);
         try {
-            ResultSet rs = null;
-            try {
-                rs = stmt.executeQuery(sql);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            int myHash = pass.hashCode();
 
-            if(Objects.requireNonNull(rs).next()) {
-                return rs.getString(1);
-            }
+            ResultSet rs = stmt.executeQuery(sql);
 
+            if(rs.next()) {
+                String nick = rs.getString(1);
+                int dbHash = rs.getInt(2);
+
+                if(myHash == dbHash) {
+                    return nick;
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }

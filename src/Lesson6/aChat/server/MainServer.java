@@ -3,11 +3,14 @@ package Lesson6.aChat.server;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Vector;
 
 class MainServer {
+
+    private static final int SERVER_PORT = 8189;
 
     private Vector<ClientHandler> clients;
 
@@ -23,22 +26,23 @@ class MainServer {
 
         try {
             AuthService.connect();
-
-            server = new ServerSocket(8189);
-            System.out.println("Сервер localhost:8189 запущен! Ожидаем подключения...");
+            server = new ServerSocket(SERVER_PORT);
+            System.out.printf("Сервер %s запущен! Ожидаем подключения...\n", String.valueOf(server.getLocalSocketAddress()));
 
             while (true) {
                 socket = server.accept();
+                socket.setSoTimeout(120000);
                 new ClientHandler(this, socket);
                 System.out.println("Клиент инициировал подключение!");
             }
         } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("Время ожидания вышло!");
         } finally {
             try {
                 Objects.requireNonNull(socket).close();
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException ee) {
+                ee.printStackTrace();
             }
             try {
                 Objects.requireNonNull(server).close();
@@ -49,31 +53,47 @@ class MainServer {
         }
     }
 
-    void broadCastMsg(String msg) {
-        for (ClientHandler o :
-                clients) {
-            o.sendMsg(msg);
+    void broadCastMsg(ClientHandler from, String msg) {
+        for (ClientHandler o: clients) {
+            if(!o.checkBlackList(from.getNick())) {
+                o.sendMsg(msg);
+            }
         }
     }
 
     void privateMsg(ClientHandler from, String nickTo, String msg) {
         for (ClientHandler o :
                 clients) {
-            if (o.getNick().equals(nickTo)) {
+            if (o.getNick().equals(nickTo) && !o.checkBlackList(from.getNick())) {
                 o.sendMsg("от " + from.getNick() + ": " + msg);
                 from.sendMsg("юзеру " + nickTo + ": " + msg);
                 return;
             }
         }
-        from.sendMsg("Юзера " + nickTo + " нет в чате");
+        from.sendMsg("Пользователя " + nickTo + " нет в чате!");
+    }
+
+    public void broadcastClientsList() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("/clientlist ");
+        for (ClientHandler o: clients) {
+            sb.append(o.getNick()).append(" ");
+        }
+        for (ClientHandler o: clients) {
+            o.sendMsg(sb.toString());
+        }
     }
 
     void subscribe(ClientHandler client) {
         clients.add(client);
+        System.out.println(client.getNick() + " добавлен в список пользователей");
+        broadcastClientsList();
     }
 
     void unsubscribe(ClientHandler client) {
         clients.remove(client);
+        System.out.println(client.getNick() + " удалён из списка пользователей");
+        broadcastClientsList();
     }
 
 }

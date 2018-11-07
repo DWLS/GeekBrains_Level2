@@ -4,6 +4,7 @@ import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.Vector;
 
 class ClientHandler {
@@ -18,6 +19,12 @@ class ClientHandler {
 
     String getNick() {
         return nick;
+    }
+
+    private Vector<String> blackList;
+
+    boolean checkBlackList(String nick) {
+        return blackList.contains(nick);
     }
 
     private boolean isNickBusy (Vector<ClientHandler> vch, String nick) {
@@ -36,6 +43,7 @@ class ClientHandler {
             this.socket = socket;
             this.in = new DataInputStream(socket.getInputStream());
             this.out = new DataOutputStream(socket.getOutputStream());
+            this.blackList = new Vector<>();
 
             new Thread(new Runnable() {
                 @Override
@@ -54,7 +62,7 @@ class ClientHandler {
                                         sendMsg("/authok");
                                         nick = newNick;
                                         server.subscribe(ClientHandler.this);
-                                        server.broadCastMsg(nick + " зашёл в чат");
+                                        server.broadCastMsg(ClientHandler.this, nick + " зашёл в чат");
                                         break;
                                     }
                                 } else {
@@ -65,23 +73,28 @@ class ClientHandler {
                         // цикл для работы
                         while (true) {
                             String str = in.readUTF();
+                            // блок служебных команд
                             if (str.startsWith("/")) {
                                 if(str.equals("/end")) {
                                     out.writeUTF("/serverClosed");
                                     break;
                                 }
                                 if (str.startsWith("/w ")) {
+                                    String[] tokens = str.split("\\s", 3);
+                                    server.privateMsg(ClientHandler.this, tokens[1], tokens[2]);
+                                }
+                                if (str.startsWith("/blacklist ")) {
                                     String[] tokens = str.split("\\s");
-                                    String nick = tokens[1];
-                                    String msg = str.substring(4 + nick.length());
-                                    server.privateMsg(ClientHandler.this, nick, msg);
+                                    blackList.add(tokens[1]);
+                                    sendMsg("Вы добавили пользователя " + tokens[1] + " в черный список");
                                 }
                             } else {
-                                server.broadCastMsg(nick + ": " + str);
+                                server.broadCastMsg(ClientHandler.this,nick + ": " + str);
                             }
                         }
                     } catch (IOException e) {
-                        e.printStackTrace();
+                        System.out.println(e.getMessage());
+                        //e.printStackTrace();
                     } finally {
                         try {
                             in.close();
@@ -99,7 +112,7 @@ class ClientHandler {
                             e.printStackTrace();
                         }
                         server.unsubscribe(ClientHandler.this);
-                        server.broadCastMsg(nick + " покинул чат");
+                        server.broadCastMsg(ClientHandler.this, nick + " покинул чат");
                         System.out.println(nick + " покинул чат");
                     }
                 }
