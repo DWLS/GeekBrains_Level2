@@ -1,4 +1,4 @@
-package Lesson6.SimpleTestChat;
+package Lesson6.SimpleTestChat.Server;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -52,7 +52,7 @@ public class VerySimpleChatServer {
                 clientOutputStream.add(writer);
 
                 new Thread(new ClientHandler(clientSocket)).start();
-                System.out.println("произошло подключение...");
+                System.out.println("Произошло подключение...");
             }
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -69,4 +69,5 @@ public class VerySimpleChatServer {
             }
         }
     }
+
 }

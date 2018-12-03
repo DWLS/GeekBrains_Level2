@@ -1,4 +1,4 @@
-package Lesson6.SimpleTestChat;
+package Lesson6.SimpleTestChat.Client;
 
 import javax.swing.*;
 import java.awt.*;
@@ -64,10 +64,10 @@ public class SimpleChatClient {
             Socket sock = new Socket("localhost", 8189);
             reader = new Scanner(sock.getInputStream());
             writer = new PrintWriter(sock.getOutputStream());
-            System.out.println("соединение установлено...");
+            System.out.println("Соединение установлено...");
         } catch (IOException ex) {
             ex.printStackTrace();
         }
     }
-}
 
+}
