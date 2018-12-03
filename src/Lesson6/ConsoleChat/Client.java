@@ -12,10 +12,13 @@ public class Client {
     private static String message;
     private static Scanner consoleReader;
 
+    private final static int SERVER_PORT = 8189;
+    private final static String SERVER_ADDRESS = "localhost";
+
     public static void main(String[] args) {
         Socket sock = null;
         try {
-            sock = new Socket("localhost", 8189);
+            sock = new Socket(SERVER_ADDRESS, SERVER_PORT);
             reader = new Scanner(sock.getInputStream());
             writer = new PrintWriter(sock.getOutputStream());
             System.out.println("Cоединение установлено...");
@@ -44,7 +47,9 @@ public class Client {
                         writer.println(msg);
                         writer.flush();
                         Objects.requireNonNull(finalSock).close();
-                        //System.exit(0);     // если ввели управляющее слово, то закрываем клиента
+                        if (!finalSock.isClosed()) {
+                            finalSock.close();    // если ввели управляющее слово, то закрываем клиента
+                        }
                     } else {
                         writer.println(msg);
                         writer.flush();
